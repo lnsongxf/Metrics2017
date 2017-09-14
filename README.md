@@ -1,4 +1,6 @@
-# Intro Metrics for Undergraduate Student at Nanjing University, Fall 2017
+# Intro Metrics at Nanjing University, Fall 2017
+
+Stata and R 
 
 
 
