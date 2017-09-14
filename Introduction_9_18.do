@@ -16,7 +16,7 @@ Stata是经济学研究主流的数据分析软件，它功能强大，程序包
 
 Stata由StataCorp LLC 研发、维护，该公司同时通过其出版社Stata Press出版季刊
 Stata Journal（2017年影响因子为1.092）。
-目前Stata的最新版本是15.0版，根绝性能差异分为以下几种类型：
+目前Stata的最新版本是15.0版，根据性能差异分为以下几种类型：
 
 Stata/IC For mid-sized datasets.
 
@@ -32,12 +32,13 @@ Stata/MP + cores Even faster.
 
 
 
-（2）为什么选择Stata？
-*以下对比基于我之前接触软件时的版本功能以及个人经验，可能过时或者存在错误
++（2）为什么选择Stata？
+*以下对比基于我之前接触软件时的版本功能以及自己的人生经验，可能过时或者存在错误
 其他软件与Stata相比：
 
->SPSS 的图像化界面非常友好（同时操作也比较繁琐），但更侧重于数据的统计描述，貌似
-在社会学、心理学领域中比较常用，比较大的缺点是其输出结果冗杂；
+>SPSS 的图像化界面非常友好（同时操作也比较繁琐。当然，它也可以输入命令或编程开发），
+它更侧重于数据的统计描述，貌似在社会学、心理学领域中比较常用，比较大的缺点是其输
+出结果冗杂；
 
 >SAS 数据分析界的史诗级存在，美国一些政府机构钦定的数据分析工具，权威而全面，但感
 觉它的思路是把电脑改造成一个数据处理工作站，软件安装包10几GB左右，功能极其冗杂，
@@ -177,6 +178,25 @@ Ho: age 均值为25
 
 ttest age == 24 //默认置信度为95%
 
+t=(Ybar-m)/std dev(Ybar)
+
+-Ybar act:已知为 【25.37079】
+	sum age
+-m:由原假设，m=【24】
+-std dev(Ybar)=总体标准差西格玛/sqrt(n), 西格玛：【未知】
+	样本标准差 【S】 作为“西格玛”的估计量：S=sum（Yi-Ybar）/sqrt(n-1)
+	故std dev(Ybar)的估计量【std error】=S/sqrt(n),计算为 【0.3428148】
+	gen ei2=(age-24)^2 //残差平方记为ei2
+	egen summation=total(ei2)
+	gen stdev=sqrt(summation/444)
+		tab stdev
+	gen stderr=stdev/sqrt(445)
+		tab stderr
+	
+综上，t的估计值为（25.37079-24）/stderr =【3.998631】
+gen t=(25.37079-24)/stderr 
+tab t
+
 ttest age == 25, level(95)
 
 ttest age == 25.3, level(99)
@@ -214,6 +234,7 @@ correlate re74 educ //相关系数
 (2)习惯利用do文件进行操作：编辑、修改更容易，操作可保存、复制
 (3)定义宏变量：简化命令，方便修改
 (4)充分利用搜索引擎Google（baidu很弱)、人大经济论坛、help文档等资源
+(5)注意中英文字符的切换，尤其是逗号、引号
 
 
 
