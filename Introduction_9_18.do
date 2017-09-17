@@ -8,10 +8,11 @@
 一个例子：
 t检验，失业者（总体）的平均年龄是25岁吗？
 excel：图形化界面->命令语句
-	=AVERAGE(Sheet1!B2:B446)
-	=STDEV(Sheet1!B2:B446)
-	=(B2-B1)/(B3/SQRT(445))
-	=1-T.DIST(B4,445,TRUE ) 
+	=AVERAGE(Sheet1!B2:B446) //Ybar act
+	=STDEV(Sheet1!B2:B446) //S
+	=C7/SQRT(C4) //std. err.
+	=(C6-C3)/C8 //t
+	=1-T.DIST(B4,445,TRUE ) //p-single
 stata：向量运算&命令语句
 	ttest age == 24 
 
@@ -115,23 +116,7 @@ stat/transfer 12.0 似乎不能在win10 1703版上正常运行，请大家试一
 save $root/workingdata/Training_cleaned,replace
 
 **==============================================================**
-**                   3. 录屏神器：log文件                       **
-**==============================================================**
-log using "$root/log/矩阵加法"  //开始录制
-
-matrix input a = (1,2\3,4)
-matrix list a
-matrix input b = (1,1\1,1)
-matrix list b
-log off //暂停录制
-matrix c=a+b
-log on //继续录制
-matrix list c
-
-log close //结束录制
-
-**==============================================================**
-**                      4. do文件的编辑                         **
+**                      3. do文件的编辑                         **
 **==============================================================**
 
 *3.1 为什么要使用do文件
@@ -174,11 +159,28 @@ use Training   //这时命令注释-设置好工作路径后直接使用 use fil
 sum train  age educ black hisp married nodegree mosinex re74 re75 re78 unem74 ///
     unem75 unem78 lre74 lre75 lre78 agesq mostrn
 
+**==============================================================**
+**                   4. 录屏神器：log文件                       **
+**==============================================================**
+log using "$root/log/矩阵加法"  //开始录制
+
+matrix input a = (1,2\3,4)
+matrix list a
+matrix input b = (1,1\1,1)
+matrix list b
+log off //暂停录制
+matrix c=a+b
+log on //继续录制
+matrix list c
+
+log close //结束录制
+
+
 
 **==============================================================**
 **                      5. 数据描述与t检验                      **
 **==============================================================**
-（1）简单的数据描述
+5.1 简单的数据描述
 clear all // 清空数据、变量
 set more off , perm //关闭more功能
 global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门"  // 利用全局宏变量设置根目录
@@ -192,7 +194,7 @@ tab mostrn train //列联表
 collapse re74 re75 re78 ,by(train) //按照train分组并保留均值
 list //列示每个样本的各个变量值
 
-（2）t检验
+5.2 t检验
 i.单样本t检验
 Ho: age 均值为25
 
@@ -239,7 +241,7 @@ ttest  re78 , by(train)
 ttest  re74 , by(black) 
 ttest  re78 , by(black) 
 
-(3)变量相关性
+5.3 变量相关性
 twoway scatter re74 educ, msize(small)
 correlate re74 educ,covariance //协方差
 correlate re74 educ //相关系数
