@@ -70,7 +70,7 @@ Stata的替代软件。
 
 
 **==============================================================**
-**                2. Stata的图形化操作界面(略)                  **
+**                2*. Stata的图形化操作界面(略)                 **
 **==============================================================**
 
 菜单栏
@@ -88,9 +88,9 @@ Stata的替代软件。
 的文件类型包括数据（.dta）和命令（.do），下面我们分别介绍如何在Stata中对二者进行
 操作。
 
-1. Stata所直接处理的是扩展名为.dta文件，类似txt文档，占用存储空间小
+（1）. Stata所直接处理的是扩展名为.dta文件，类似txt文档，占用存储空间小
 *可以在菜单栏打开
-2.其他兼容的数据类型 csv,txt, xlsx
+（2）.其他兼容的数据类型 csv,txt, xlsx
 clear all
 global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门" 
 cd "$root/rawdata"
@@ -106,8 +106,8 @@ xlsx文件（stata自身具有一定的数据格式转换功能）
 clear
 import excel Training.xlsx, sheet("Sheet1") firstrow
 
-3.复制粘贴
-4.stat transfer
+（3）.复制粘贴
+（4）.stat transfer
 stat/transfer 12.0 似乎不能在win10 1703版上正常运行，请大家试一下并反馈是否出现
 “a debug report has been generated”这样的报错；
 我装了9.0版本，目前正常运行
@@ -116,10 +116,10 @@ stat/transfer 12.0 似乎不能在win10 1703版上正常运行，请大家试一
 save $root/workingdata/Training_cleaned,replace
 
 **==============================================================**
-**                      3. do文件的编辑                         **
+**                      4. do文件的编辑                         **
 **==============================================================**
 
-*3.1 为什么要使用do文件
+*4.1 为什么要使用do文件
 
 -图形化界面的局限：
 >命令不易保存、修改，软件关闭，命令即消失；
@@ -136,7 +136,7 @@ save $root/workingdata/Training_cleaned,replace
 的文本编辑器，比如Sublime、Emacs等，do 文件的功能比较弱，有编程基础的同学可以
 尝试使用Sublime)
 
-*3.2 do文件的基本编辑规则
+*4.2 do文件的基本编辑规则
 
 do文件中的命令默认为蓝色，字符串为红色，尽量避免使用系统预留字段作为变量名
 do文件中的命令可以直接执行：选中，Ctrl+D
@@ -160,7 +160,7 @@ sum train  age educ black hisp married nodegree mosinex re74 re75 re78 unem74 //
     unem75 unem78 lre74 lre75 lre78 agesq mostrn
 
 **==============================================================**
-**                   4. 录屏神器：log文件                       **
+**                   5. 录屏神器：log文件                       **
 **==============================================================**
 log using "$root/log/矩阵加法"  //开始录制
 
@@ -178,23 +178,23 @@ log close //结束录制
 
 
 **==============================================================**
-**                      5. 数据描述与t检验                      **
+**                      6. 数据描述与t检验                      **
 **==============================================================**
-5.1 简单的数据描述
+6.1 简单的数据描述
 clear all // 清空数据、变量
 set more off , perm //关闭more功能
 global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门"  // 利用全局宏变量设置根目录
 cd "$root/rawdata" //设置工作路径
 use Training, clear  //调取数据文件
 
-sum train  age educ black hisp married nodegree mosinex re74 re75 re78 unem74 ///
-unem75 unem78 lre74 lre75 lre78 agesq mostrn //摘要
-
+des //描述
+sum //摘要
 tab mostrn train //列联表
+
 collapse re74 re75 re78 ,by(train) //按照train分组并保留均值
 list //列示每个样本的各个变量值
 
-5.2 t检验
+6.2 t检验
 i.单样本t检验
 Ho: age 均值为25
 
@@ -209,7 +209,7 @@ t=(Ybar-m)/std dev(Ybar)
 	样本标准差 【S】 作为“西格玛”的估计量：S=sum（Yi-Ybar）/sqrt(n-1)
 	故std dev(Ybar)的估计量【std error】=S/sqrt(n),计算为 【0.3428148】
 	gen ei2=(age-24)^2 //残差平方记为ei2
-	egen summation=total(ei2)
+	egen summation=total(ei2) //egen是gen的扩展
 	gen stdev=sqrt(summation/444)
 		tab stdev
 	gen stderr=stdev/sqrt(445)
@@ -219,7 +219,7 @@ t=(Ybar-m)/std dev(Ybar)
 gen t=(25.37079-24)/stderr 
 tab t
 
-ttest age == 25, level(95)
+ttest age == 25, level(90)
 
 ttest age == 25.3, level(99)
 
