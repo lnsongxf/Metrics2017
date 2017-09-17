@@ -4,7 +4,16 @@
 **					        2017年9月11日                       **
 **==============================================================**
 
-
+从Excel到Stata
+一个例子：
+t检验，失业者（总体）的平均年龄是25岁吗？
+excel：图形化界面->命令语句
+	=AVERAGE(Sheet1!B2:B446)
+	=STDEV(Sheet1!B2:B446)
+	=(B2-B1)/(B3/SQRT(445))
+	=1-T.DIST(B4,445,TRUE ) 
+stata：向量运算&命令语句
+	ttest age == 24 
 
 **==============================================================**
 **                        1. 关于Stata                          **
@@ -60,7 +69,7 @@ Stata的替代软件。
 
 
 **==============================================================**
-**                2. Stata的图形化操作界面                      **
+**                2. Stata的图形化操作界面(略)                  **
 **==============================================================**
 
 菜单栏
@@ -80,16 +89,21 @@ Stata的替代软件。
 
 1. Stata所直接处理的是扩展名为.dta文件，类似txt文档，占用存储空间小
 *可以在菜单栏打开
-2.其他兼容的数据类型 csv,txt
-*use Training.csv, clear
+2.其他兼容的数据类型 csv,txt, xlsx
+clear all
+global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门" 
+cd "$root/rawdata"
+
+
 clear
-insheet using Tr aining.csv
+insheet using Training.csv
 
 clear
 insheet using Training.txt
-这一方法不兼容.xlsx文件
+
+xlsx文件（stata自身具有一定的数据格式转换功能）
 clear
-insheet using Training.xlsx //结果窗口显示(1 var, 3 obs)，显然存在问题
+import excel Training.xlsx, sheet("Sheet1") firstrow
 
 3.复制粘贴
 4.stat transfer
@@ -101,13 +115,20 @@ stat/transfer 12.0 似乎不能在win10 1703版上正常运行，请大家试一
 save $root/workingdata/Training_cleaned,replace
 
 **==============================================================**
-**                      3. log文件                       **
+**                   3. 录屏神器：log文件                       **
 **==============================================================**
-(这里简单介绍一下，将来交作业除了do文件外，还要交这个。：）
+log using "$root/log/矩阵加法"  //开始录制
 
-log using ""
+matrix input a = (1,2\3,4)
+matrix list a
+matrix input b = (1,1\1,1)
+matrix list b
+log off //暂停录制
+matrix c=a+b
+log on //继续录制
+matrix list c
 
-log close 
+log close //结束录制
 
 **==============================================================**
 **                      4. do文件的编辑                         **
@@ -154,7 +175,6 @@ sum train  age educ black hisp married nodegree mosinex re74 re75 re78 unem74 //
     unem75 unem78 lre74 lre75 lre78 agesq mostrn
 
 
-
 **==============================================================**
 **                      5. 数据描述与t检验                      **
 **==============================================================**
@@ -176,7 +196,7 @@ list //列示每个样本的各个变量值
 i.单样本t检验
 Ho: age 均值为25
 
-ttest age == 24 //默认置信度为95%
+ttest age == 24 //默认置信度为95%，注意赋值符号与等于符号的区别
 
 t=(Ybar-m)/std dev(Ybar)
 
@@ -235,6 +255,7 @@ correlate re74 educ //相关系数
 (3)定义宏变量：简化命令，方便修改
 (4)充分利用搜索引擎Google（baidu很弱)、人大经济论坛、help文档等资源
 (5)注意中英文字符的切换，尤其是逗号、引号
+(6)stata 是大小写敏感的
 
 
 
