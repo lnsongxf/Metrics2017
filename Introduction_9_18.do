@@ -6,7 +6,7 @@
 
 从Excel到Stata
 一个例子：
-t检验，失业者(总体)的平均年龄是25岁吗？
+t检验，低收入者(总体)的平均年龄是25岁吗？
 excel：图形化界面->命令语句
 	=AVERAGE(Sheet1!B2:B446) //Ybar act
 	=STDEV(Sheet1!B2:B446) //S
@@ -14,7 +14,7 @@ excel：图形化界面->命令语句
 	=(C6-C3)/C8 //t
 	=1-T.DIST(B4,445,TRUE ) //p-single
 stata：向量运算&命令语句
-	ttest age == 24 
+	ttest age == 25 
 
 **==============================================================**
 **                        1. 关于Stata                          **
@@ -91,12 +91,14 @@ Stata的替代软件。
 (1) Stata所直接处理的是扩展名为.dta文件，类似txt文档，占用存储空间小
 *可以在菜单栏打开
 clear all
-global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门" 
+
+
+global root "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门" 
 /*定义全局宏变量root为文件夹路径。每次开关stata软甲，全局宏变量都会被清除，
 否则全局宏适用于全篇*/
 cd "$root/rawdata"
 /*cd设置好工作路径后，以后调用.dta数据只需要 use filename 即可*/
-use Training
+use "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/rawdata/Training.dta"
 
 (2)其他兼容的数据类型 csv,txt, xlsx
 
@@ -117,7 +119,7 @@ stat/transfer 12.0 似乎不能在win10 1703版上正常运行，请大家试一
 我装了9.0版本，目前正常运行
 
 数据的保存
-save $root/workingdata/Training_cleaned,replace
+save "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/workingdata/Training_cleaned",replace
 
 **==============================================================**
 **                      4. do文件的编辑                         **
@@ -145,10 +147,7 @@ save $root/workingdata/Training_cleaned,replace
 do文件中的命令可以直接执行：选中，Ctrl+D
 【修改工作路径】
 clear all //do文件中的命令默认为蓝色，字符串为红色(双引号中)，变量、语法为黑色
-set more off , perm
-global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门" 
 cd "$root/rawdata"
-
 use Training   //这是命令注释-设置好工作路径后直接使用 use filename 即可调取文件
 
 *行首为星号的命令为红色，表示不会被执行
@@ -171,7 +170,7 @@ sum train  age educ black hisp married nodegree mosinex re74 re75 re78 unem74 //
 **==============================================================**
 **                   5. 录屏神器：log文件                       **
 **==============================================================**
-log using "$root/log/矩阵加法"  //开始录制
+log using "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/log/矩阵加法"  //开始录制
 
 matrix input a = (1,2\3,4)
 matrix list a
@@ -192,8 +191,9 @@ log close //结束录制
 6.1 简单的数据描述
 clear all // 清空数据、变量
 set more off , perm //关闭more功能
-global root "C:/Users/Xiaoguang/Desktop/9.18计量经济学-Stata入门"  // 利用全局宏变量设置根目录
+global root "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门"  // 利用全局宏变量设置根目录
 cd "$root/rawdata" //设置工作路径
+
 use Training, clear  //调取数据文件
 
 des //描述
@@ -216,7 +216,7 @@ t=(Ybar-m)/std dev(Ybar)
 	sum age
 -m:由原假设，m=【24】
 -std dev(Ybar)=总体标准差西格玛/sqrt(n), 西格玛：【未知】
-	样本标准差 【S】 作为“西格玛”的估计量：S=sum(Yi-Ybar)/sqrt(n-1)
+	样本标准差 【S】 作为“西格玛”的估计量：S^2=sum(Yi-Ybar)^2/(n-1)
 	故std dev(Ybar)的估计量【std error】=S/sqrt(n),计算为 【0.3428148】
 	gen ei2=(age-24)^2 //残差平方记为ei2
 	egen summation=total(ei2) //egen是gen的扩展
@@ -247,9 +247,6 @@ Ho:培训前，处理组和控制组收入均值无差异
 ttest  re74 , by(train) 
 Ho:培训后，处理组和控制组收入均值无差异
 ttest  re78 , by(train) 
-*关于黑人
-ttest  re74 , by(black) 
-ttest  re78 , by(black) 
 
 5.3 变量相关性
 twoway scatter re74 educ, msize(small)
@@ -263,9 +260,38 @@ correlate re74 educ //相关系数
 (1)文件夹：分类保存不同类型的文件
 尽量使用英文做文件夹和文件名(Stata14以后对中文支持变强)
 举例：RawData,Dofile,Logfile,
+避免污染原始数据
 (2)习惯利用do文件进行操作：编辑、修改更容易，操作可保存、复制
 (3)定义宏变量：简化命令，方便修改
 (4)充分利用搜索引擎Google(baidu很弱)、人大经济论坛、help文档等资源
+(5)做好数据备份：Dropbox、onedrive、百度云等网盘，本地介质，甚至邮箱
+
+**==============================================================**
+**                      7. 第一次作业                           **
+**==============================================================**
+                             黑人的故事
+假设在样本数据Training.dta中，低收入者既有白人(black==0)，也有黑人(black==1),
+他们中的一部分人在1975年被随机抽取并接受长期培训(train==1)。所有样本在1974年(培训前)
+和1978年(培训后3年)的收入分别记为向量re74、re78.
+
+问题：
+1.阅读 ttest 的帮助文档 (提示，命令是： help ttest, 注意其中关于判断语句 if 的说明)
+2.利用ttest检验：对于全体样本，在1974年(培训前)，黑人和白人的收入均值有差异吗？
+				 1978年呢(培训后3年)？
+3.利用ttest检验: 对于接受培训的样本(train==1),在1978年(培训后3年)，黑人和白人的收
+				入均值有差异吗？对于没有接受培训的样本(train==0)呢？(提示：使用if语句)
+4.问题3、4的对比说明了什么问题？
+5.在变量窗口，我们看到变量re78对应的label是“real earns., 1978, $1000s”，
+  请将这个变量标签修改为中文“1978年的实际收入（千美元）”。 (提示：help label)
+				
+要求【重要，影响分数】：
+1.9月25日前，将do文件和log文件发送到邮箱：jl2017f@126.com (计量2017fall)
+2.do文件和log文件均以“学号_姓名_专业”命名，如 b151090001_户纳东_经济.do
+3.此次作业两个文件【不】要打包发送
+
+9月25日0:00之后邮件不会正确归档，请大家不要延误提交，错误的文件命名或打包会妨碍批改，
+也会酌情扣分。
+
 
 
 
