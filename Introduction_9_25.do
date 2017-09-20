@@ -69,7 +69,9 @@ help estout
 SSC/*the Statistical Software Components (SSC) archive(the Boston College Archive)
 ssc install newprogramname */
 
-ssc install estout
+ssc install estpost
+ssc install esttab
+
 
 ssc hot
 ssc new
@@ -90,16 +92,22 @@ list
 
 4.4 Diagrams
 *scatter: Education and earnings in 1974
-use Training, clear 
+use Training, clear
+tab re74 
 drop if re74>30
 twoway scatter re74 educ, msize(small) title(Education and earnings in 1974) ///
 legend(off) ytitle("earnings in 1974") xtitle("Years of education")|| ///
 lfit re74 educ,  lwidth(thin)
+
 *pie: earning level in 1978
+use Training, clear 
 sum re78,d
 gen level=0
 replace level=1 if re78>0&re78<=20
 replace level=2 if re78>20
+
+*histogram
+histogram re78,width(2)  normal
 
 graph pie ,over(level) legend(label(1 "No earning") label(2 "Normal")  ///
 label(3 "Well-off"))  plabel(_all percent)
