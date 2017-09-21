@@ -9,9 +9,18 @@
 **                      1. Import datasets                      **
 **==============================================================**
 
+
+
+*the help file of ttest
+help file
+help ttest
+
+return list
+
+
 (1)
 clear all
-use "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/rawdata/Training.dta"
+use "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction\rawdata\Training.dta"
 
 (2)
 clear
@@ -23,12 +32,12 @@ insheet using Training.txt
 clear
 import excel Training.xlsx, sheet("training") firstrow 
 
-save "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/workingdata/Training_cleaned",replace
+save "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction\workingdata\Training_cleaned",replace
 
 **==============================================================**
 **                        2. log file                           **
 **==============================================================**
-log using "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/log/matrix"  
+log using "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction\log\matrix"  
 
 matrix input a = (1,2\3,4)
 matrix list a
@@ -45,7 +54,7 @@ log close
 **                      3. t test(2 samples)                    **
 **==============================================================**
 clear all
-use "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门/rawdata/Training.dta"
+use "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction\rawdata\Training.dta"
 
 Ho: there is no difference between re74(train=0)&re74(train=1)
 ttest  re74 , by(train) 
@@ -57,13 +66,8 @@ ttest  re78 , by(train)
 **                      4. basic commands                       **
 **==============================================================**
 
-4.1 help file
-help ttest
 
-return list
-
-
-4.2 New packages
+4.1 New packages
 which ttest
 help estout
 SSC/*the Statistical Software Components (SSC) archive(the Boston College Archive)
@@ -77,9 +81,9 @@ ssc hot
 ssc new
 
 
-4.3 Data Description
+4.2 Data Description
 clear all 
-global root "C:\Users\Xiaoguang\OneDrive\2017计量经济学\9.18计量经济学-stata入门"  
+global root "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction"  
 cd "$root/rawdata" 
 use Training, clear  
 
@@ -90,7 +94,7 @@ tab mostrn train
 collapse re74 re75 re78 ,by(train) 
 list 
 
-4.4 Diagrams
+4.3 Pictures
 *scatter: Education and earnings in 1974
 use Training, clear
 tab re74 
