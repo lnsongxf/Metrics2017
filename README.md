@@ -17,6 +17,7 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 	v. The windows of stata
 	vi. Basic rules for do-file editing
 	vii. One sample t test on Stata
+	viii. FAQ
 
 **Lecture 2.  Introduction (II)**
 	
@@ -28,6 +29,7 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 		ssc install/hot/new
 		twoway scatter, graph pie, histogram
 		estpost, esttab, estout
+	vi. HW1
 		
 
 
