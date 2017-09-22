@@ -1,6 +1,6 @@
 # Intro Metrics at Nanjing University, Fall 2017
 
-Stata and R 
+Stata and R : a course for junior students major in economics
 
 Lecture 1. Introduction (I)
 
