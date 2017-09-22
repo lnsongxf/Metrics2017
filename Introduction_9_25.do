@@ -15,9 +15,6 @@
 help file
 help ttest
 
-return list
-
-
 (1)
 clear all
 use "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction\rawdata\Training.dta"
@@ -69,12 +66,13 @@ ttest  re78 , by(train)
 
 4.1 New packages
 which ttest
-help estout
+help estpost
 SSC/*the Statistical Software Components (SSC) archive(the Boston College Archive)
 ssc install newprogramname */
 
 ssc install estpost
 ssc install esttab
+help estpost
 
 
 ssc hot
@@ -111,7 +109,7 @@ replace level=1 if re78>0&re78<=20
 replace level=2 if re78>20
 
 *histogram
-histogram re78,width(2)  normal
+histogram re78,width(2)  normal //the plot has the same mean and viriance as the vriable
 
 graph pie ,over(level) legend(label(1 "No earning") label(2 "Normal")  ///
 label(3 "Well-off"))  plabel(_all percent)
