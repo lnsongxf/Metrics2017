@@ -15,7 +15,7 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 	iii.Why we have to learn stata? Is there any other choices?
 	iv. The GUI of stata
 	v. The windows of stata
-	vi. Basic rules for do-file editing
+	vi. Basic rules in do-file editor
 	vii. One sample t test on Stata
 	viii. FAQ
 
@@ -25,7 +25,7 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 	ii. Data import
 	iii. About logfile
 	iv. Two sample t test on Stata
-	v. Useful command for beginners:
+	v. Useful commands for beginners:
 		ssc install/hot/new
 		twoway scatter, graph pie, histogram
 		estpost, esttab, estout
