@@ -4,9 +4,11 @@
 
 
 **Note：
-All the material in this repository are contributed by Zhaopeng Qu & Xiaoguang Ling (Nanjing University) on the purpose of teaching and should not be used for profit.
+All the materials in this repository are contributed by Zhaopeng Qu & Xiaoguang Ling (Nanjing University) on the purpose of teaching and should not be used for profit.
 The authors own the copyright. For reprint/citation/reference, pelease note its authors and origin, thanks.**
 
+
+**Stata**
 
 **Lecture 1. Introduction (I)**
 
@@ -30,7 +32,10 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 		twoway scatter, graph pie, histogram
 		estpost, esttab, estout
 	vi. HW1
-		
+
+**R**
+
+**Lecture 1.**
 
 
 
