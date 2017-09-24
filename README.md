@@ -8,7 +8,7 @@ All the materials in this repository are contributed by Zhaopeng Qu & Xiaoguang 
 The authors own the copyright. For reprint/citation/reference, pelease note its authors and origin, thanks.**
 
 
-**Stata**
+**>Stata**
 
 **Lecture 1. Introduction (I)**
 
@@ -33,7 +33,7 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 		estpost, esttab, estout
 	vi. HW1
 
-**R**
+**>R**
 
 **Lecture 1.**
 
