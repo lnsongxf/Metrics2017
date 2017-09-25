@@ -1,0 +1,249 @@
+---
+title: "**_An Brief Introduction to R_**"
+author: "*Frank Qu*"
+date: "9/24/2017"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+classoption: "hyperref,"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Learning Object 
+
+- Introduction to R and RStudio
+- Reading data: importing datasets, data types, defining variable
+classes
+- Manipulating data: cleaning, manipulate, package dplyr
+- Analyzing data: statistical properties, regression model, limited
+dependent variables
+- Visualizing data: built-in plotting functions and ggplot2 package
+
+# Getting Stared With R 
+
+- Not only a statistical programming language, but a computing environment for statistical computing and graphics.
+- Powerful Programming and Extending Capability 
+- Multiple Platforms
+- Very excellent graphics 
+- A big but not a determinate advantage:
+  FREE 
+  Open Source
+  
+## Installing 
+
+### Installing R (skip)
+ 
+### Using IDE: RStudio (skip) 
+  
+- The most popular IDE for R 
+- Also Free(for basic version)
+- Combine with \texttt{Markdown} and  \texttt{Latex} to make scientific writings or presentation easier
+- Download it from here: [RStudio]{https://www.rstudio.com/products/rstudio/download/}
+
+## Using R as \texttt{Stata}: Packages
+
+- Many researchers provide their own R programs through the R project webpage. 
+- Many packages are already preinstalled in the basic R installation.
+- They can be directly activated from RStudio.
+- Or they are activated by issuing a command in the Console.
+
+```{r install, echo=TRUE}
+#install.packages("AER",repos = "http://mirrors.xmu.edu.cn/CRAN/")
+#library("AER")
+#install.packages("haven",repos = "http://mirrors.xmu.edu.cn/CRAN/")
+```
+
+## Where to get help
+
+- The online help in R describes all basic R commands as well as commands in active packages. 
+- search the online help from the Help pane in RStudio.
+- Alternatively, using the command
+
+```{r help, echo=TRUE}
+?load
+# or
+help("load")
+# or
+??load
+# or
+help.search("read")
+```
+
+
+# Basic Data Management in R
+
+## Working Directory
+- R will look for data or save data in the drive and working directory.
+- The working directory is specified depending on the operation system
+```{r, echo=TRUE}
+getwd()
+```
+
+## Changing the Working Directory
+
+```{r,echo=TRUE}
+setwd("/Users/byelenin/Dropbox/R/R_Class/Metrics/Lec1/")
+getwd()
+```
+
+##  Importing Data: From STATA
+
+- R will look for data or save data in the drive and working directory.
+- The working directory is specified depending on the operation system
+- imports data from STATA
+
+```{r stata13, echo=TRUE}
+#install.packages("haven",repos = "http://mirrors.xmu.edu.cn/CRAN/")
+library(haven)
+caschool_data <- read_dta("/Users/byelenin/Dropbox/R/R_Class/Metrics/Lec1/caschool.dta")
+View(caschool_data)
+```
+
+##  Importing Data: From CSV
+```{r csv, echo=TRUE,message=TRUE}
+caschool_csv <- read.csv("/Users/byelenin/Dropbox/R/R_Class/Metrics/Lec1/caschool.csv")
+View(caschool_csv) 
+```
+## Summary the Data
+```{r school_summary, echo = TRUE}
+summary(caschool_data)
+```
+
+## Variables
+
+```{r dplyr, include=FALSE}
+#install.packages("dplyr")
+library(dplyr)
+
+```
+```{r name, echo=TRUE}
+#install.packages("dplyr")
+names(caschool_data)
+```
+### Keeping Variables
+
+```{r small, echo=TRUE}
+caschool_data_small <- select(caschool_data,observat,testscr,str,expn_stu,el_pct)
+head(caschool_data_small)
+
+```
+
+###  Generate new variable
+```{r data, echo=TRUE}
+
+caschool_data_small$logexp <- log(caschool_data$expn_stu)
+
+caschool_data_small$el_high <- caschool_data$el_pct>=50
+
+
+head(caschool_data_small)
+```
+
+## Descriptive Statistics
+
+- summary a variable
+```{r summary, echo=TRUE}
+summary(caschool_data_small$testscr)
+```
+- if the dataframe is attached, simply
+
+```{r sum2, echo=TRUE}
+attach(caschool_data_small)
+summary(testscr)
+```
+
+# Plot
+
+## Scatter Plot
+- Draw a scatter plot of the variable "testscr" against "str":
+```{r scatt, echo=TRUE}
+plot(str, testscr)
+abline(lm(testscr ~ str , data = caschool_data_small),col = "red")
+```
+- ggplot2 
+```{r ggplot2, echo=TRUE}
+library("ggplot2")
+ggplot(data =caschool_data_small,aes(x=str, y=testscr)) +
+    geom_point(shape=1) +    # Use hollow circles
+    geom_smooth(method=lm)   # Add linear regression line 
+                             #  (by default includes 95% confidence region)
+```
+
+## A kdensity distribution of income
+
+```{r density, echo=TRUE}
+caschool_data$inc <- with(caschool_data,avginc >=15)
+ggplot(caschool_data,aes(x=avginc))+
+  geom_density(fill="grey",color ="blue")+
+  geom_vline(xintercept = 15)
+
+caschool_data$logavginc <- log(caschool_data$avginc)
+ggplot(caschool_data,aes(x=logavginc))+
+  geom_density(fill="grey",color ="blue")
+
+```
+
+# T-test in R 
+
+## single sample
+
+- t-test for scores
+
+```{r s1-test,echo=TRUE}
+summary(caschool_data_small$testscr)
+t.test(caschool_data_small$testscr,alternative = "two.sided",mu = 650) 
+
+```
+
+- Construct t-Statistics
+
+```{r s2-test,echo=TRUE}
+randT <- rt(30000,df=NROW(testscr)-1) # build a distribution
+scoreTtest <- t.test(caschool_data_small$testscr,alternative = "two.sided",mu = 650) 
+ggplot(data.frame(x=randT)) +
+         geom_density(aes(x=x),fill = "grey",color ="blue") +
+         geom_vline(xintercept = scoreTtest$statistic) +
+         geom_vline(xintercept = mean(randT) + c(-2,2)*sd(randT),linetype = 2)
+```
+
+## T-test for the difference between two means
+
+```{r s3-test,echo=TRUE}
+t.test(testscr~el_high,data = caschool_data_small) 
+
+```
+
+
+# Rstudio for run commands and processing markdown files
+
+## R script similar to Stata dofile
+- A script is a text file with a set of R commands that can be executed jointly.
+- Script files are convenient because they automate tasks relative to type each command in the Console
+- Open a R script from the top-left corner or File, New File, R Script etc.
+
+## Rmarkdown documents
+
+- generate a new Rmarkdown
+
+
+# Online Resource
+
+## R tutorial 
+
+- Datacamp 
+- Big Data University
+
+## Markdown 
+
+
+## Latex 
+
+
+
