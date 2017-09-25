@@ -34,7 +34,7 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 	i. Two sample t test on Stata
 	ii. Ways to import .txt .csv .xlsx etc.
 	iii. Useful commands for beginners:
-                To install new packages: ssc install/hot/new
+		To install new packages: ssc install/hot/new
 		Data description:des sum tab collapse
 		Data clean: gen drop replace label
 		Graph: twoway scatter, graph pie, histogram
