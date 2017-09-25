@@ -23,19 +23,31 @@ The authors own the copyright. For reprint/citation/reference, pelease note its 
 
 **Lecture 2.  Introduction (II)**
 	
-	i. How to read help file
-	ii. Data import
-	iii. About logfile
-	iv. Two sample t test on Stata
-	v. Useful commands for beginners:
-		ssc install/hot/new
-		twoway scatter, graph pie, histogram
-		estpost, esttab, estout
-	vi. HW1
+	i. Let's read help files together
+	ii. Setting the path
+	iii. Global macro-variable
+	iv. About logfile
+	v. Basic matrix operation stata
+	
+**Exercise**
+
+	i. Two sample t test on Stata
+	ii. Ways to import .txt .csv .xlsx etc.
+	iii. Useful commands for beginners:
+                To install new packages: ssc install/hot/new
+		Data description:des sum tab collapse
+		Data clean: gen drop replace label
+		Graph: twoway scatter, graph pie, histogram
+	iv.esttab,esttab& estout
+	v. HW1
 
 **>R**
 
 **Lecture 1.**
+	i. R& RStudio
+	ii.install.package()
+	iv.basic data description
+	
 
 
 
