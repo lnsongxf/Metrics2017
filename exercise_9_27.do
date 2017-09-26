@@ -72,8 +72,8 @@ list
 use Training, clear
 tab re74 
 drop if re74>30
-twoway scatter re74 educ, msize(small) title(Education and earnings in 1974) ///
-legend(off) ytitle("earnings in 1974") xtitle("Years of education")|| ///
+scatter re74 educ, msize(small) title(Education and earnings in 1974) ///
+legend(off) ytitle("Earnings in 1974") xtitle("Years of education")|| ///
 lfit re74 educ,  lwidth(thin)
 
 *pie: earning level in 1978
@@ -83,13 +83,13 @@ gen level=0
 replace level=1 if re78>0&re78<=20
 replace level=2 if re78>20
 
-*histogram
-histogram re78,width(2)
-
 graph pie ,over(level) legend(label(1 "No earning") label(2 "Normal")  ///
 label(3 "Well-off"))  plabel(_all percent)
 
 graph save "$root/pictures/pie"
+
+*histogram
+histogram re78,width(2)
 
 4.5 Output
 *about the stored results in stata
