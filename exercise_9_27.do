@@ -33,7 +33,7 @@ insheet using Training.txt,clear
 
 import excel Training.xlsx, sheet("training") firstrow clear
 
-save "C:\Users\Xiaoguang\OneDrive\2017Econometrics\Stata-Introduction\workingdata\Training_cleaned.dta",replace
+save "$root\workingdata\Training_cleaned.dta",replace
 * DO NOT USE * / \ < > | ? as filename
 
 **==============================================================**
