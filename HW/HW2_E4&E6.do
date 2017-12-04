@@ -95,9 +95,11 @@ reg ed dist
 clear all
 use TeachingRatings
 reg course_eval beauty
-estimate store beauty1
-reg course_eval beauty intro onecredit female minority nnenglish
-estimate store beauty2
+estimate store beauty1 
+reg course_eval beauty intro onecredit female minority nnenglish if female==1
+estimate store beauty2 
+reg course_eval beauty intro onecredit female minority nnenglish if female==0
+estimate store beauty3 
 outreg2 [beauty*] using "$root\Stata\table\beauty.xls",  bdec(3) sdec(3) replace
 *c
 reg beauty intro onecredit female minority nnenglish
