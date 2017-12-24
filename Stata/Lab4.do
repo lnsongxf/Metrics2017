@@ -2,7 +2,7 @@
 **===========================================================================**
 **                                                                                
 **       Topic 9: Oaxaca_Blinder Decomposition                                                                                                     
-**       Author: Zhaopeng Qu 
+**       Author: Zhaopeng Qu and Xiaoguang Ling
 **       Date  : Dec.3 2017                                                                           
 **===========================================================================**
 **===========================================================================**
@@ -176,9 +176,11 @@ bootstrap,reps(100): reg testscr large loginc el_pct meal_pct
 
 est store bt1
 
-esttab reg1 bt1,
+esttab reg1 bt1 using "$tabs/Table4.csv", ///
+compress nogap star obslast replace 
 
-
+bootstrap, reps(1000): reg testscr large loginc el_pct meal_pct
+estat bootstrap, percentile
 
 
 
